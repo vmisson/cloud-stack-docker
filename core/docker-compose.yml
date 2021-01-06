@@ -33,15 +33,16 @@ services:
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
     volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"
+        - "/srv/docker-volumes/portainer-data:/data"
     restart: unless-stopped
     networks:
       - proxy
 
-    watchtower:
-        image: "containrrr/watchtower"
-        container_name: "watchtower"
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
+  watchtower:
+    image: "containrrr/watchtower"
+    container_name: "watchtower"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   proxy:

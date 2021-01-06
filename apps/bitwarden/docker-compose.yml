@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  bitwarden:
+    image: "bitwardenrs/server"
+    container_name: "bitwarden"
+    environment:
+      LOG_FILE: '/data/bitwarden.log'
+      SIGNUPS_ALLOWED: 'false'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer-secure.rule=Host(`password.lab.misson.cloud`)"
+      - "traefik.http.routers.portainer-secure.entrypoints=websecure"
+      - "traefik.http.routers.portainer-secure.tls.certresolver=myresolver"
+    volumes:
+      - "/srv/docker-volumes/bitwarden-data:/data"
+      - "/srv/docker-volumes/bitwarden-ssl:/ssl"            
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true    
