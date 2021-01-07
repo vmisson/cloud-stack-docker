@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+  freshrss:
+    image: "linuxserver/freshrss"
+    container_name: "freshrss"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.freshrss-secure.rule=Host(`freshrss.lab.misson.cloud`)"
+      - "traefik.http.routers.freshrss-secure.entrypoints=websecure"
+      - "traefik.http.routers.freshrss-secure.tls.certresolver=myresolver"
+    volumes:
+      - "/srv/docker-volumes/freshrss-config:/config" 
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

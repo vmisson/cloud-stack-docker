@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+  nextcloud:
+    image: nextcloud:apache
+    container_name: "nextcloud"
+    environment:
+      - REDIS_HOST=redis
+      - MYSQL_HOST=mariadb
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud       
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.lab.misson.cloud`)"
+      - "traefik.http.routers.nextcloud-secure.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud-secure.tls.certresolver=myresolver"
+    volumes:
+      - "/srv/docker-volumes/nextcloud-html:/var/www/html" 
+    restart: unless-stopped
+    networks:
+      - proxy
+
+  redis:
+    image: redis:alpine
+    container_name: "redis"
+    restart: unless-stopped
+    networks:
+      - proxy
+
+  mariadb:
+    image: mariadb
+    container_name: "mariadb"
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_ROOT_PASSWORD=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+    volumes:
+      - "/srv/docker-volumes/mariadb-mysql:/var/lib/mysql"
+    restart: unless-stopped
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
