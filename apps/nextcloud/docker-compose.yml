@@ -24,6 +24,8 @@ services:
   redis:
     image: redis:alpine
     container_name: "redis"
+    volumes:
+      - "/srv/docker-volumes/redis-data:/data" 
     restart: unless-stopped
     networks:
       - proxy
