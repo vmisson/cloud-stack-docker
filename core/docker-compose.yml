@@ -24,7 +24,7 @@ services:
       - proxy    
 
   portainer:
-    image: "portainer/portainer"
+    image: "portainer/portainer-ce"
     container_name: "portainer"
     labels:
       - "traefik.enable=true"

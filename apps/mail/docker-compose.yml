@@ -1,0 +1,54 @@
+version: '3.3'
+
+services:
+  rainloop:
+    image: hardware/rainloop
+    container_name: "rainloop"
+    depends_on:
+      - mail
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mail-secure.rule=Host(`mail.lab.misson.cloud`)"
+      - "traefik.http.routers.mail-secure.entrypoints=websecure"
+      - "traefik.http.routers.mail-secure.tls.certresolver=myresolver"
+      - "traefik.http.services.mail-secure.loadbalancer.server.port=8888"
+    volumes:
+      - "/srv/docker-volumes/rainloop-data:/rainloop/data" 
+    restart: unless-stopped
+    networks:
+      - proxy
+
+  mail:
+    image: tvial/docker-mailserver:latest
+    hostname: mail
+    domainname: lab.misson.cloud
+    container_name: mail
+    ports:
+      - "25:25"
+      - "143:143"
+      - "587:587"
+      - "993:993"
+    volumes:
+      - "/srv/docker-volumes/mail-data:/var/mail"
+      - "/srv/docker-volumes/mail-state:/var/mail-state"
+      - "/srv/docker-volumes/mail-log/:/var/log/mail"
+      - "/srv/docker-volumes/mail-config/:/tmp/docker-mailserver/"
+      - "/srv/docker-volumes/mail-letsencrypt/:/etc/letsencrypt/"
+    environment:
+      - ENABLE_SPAMASSASSIN=1
+      - ENABLE_CLAMAV=1
+      - ENABLE_FAIL2BAN=1
+      - ENABLE_POSTGREY=1
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+      - SSL_TYPE=letsencrypt
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    restart: unless-stopped    
+    networks:
+      - proxy    
+
+networks:
+  proxy:
+    external: true
