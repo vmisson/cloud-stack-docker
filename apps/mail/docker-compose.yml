@@ -19,7 +19,7 @@ services:
       - proxy
 
   mail:
-    image: tvial/docker-mailserver:latest
+    image: docker.io/mailserver/docker-mailserver:latest
     hostname: mail
     domainname: lab.misson.cloud
     container_name: mail
