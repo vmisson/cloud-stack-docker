@@ -1,0 +1,64 @@
+version: "3.3"
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus-secure.rule=Host(`prometheus.lab.misson.cloud`)"
+      - "traefik.http.routers.prometheus-secure.entrypoints=websecure"
+      - "traefik.http.routers.prometheus-secure.tls.certresolver=myresolver"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    volumes:
+      - "/srv/docker-volumes/prometheus-prometheus:/etc/prometheus"
+      - "/srv/docker-volumes/prometheus:/prometheus"
+    networks:
+      - proxy
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - proxy
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node-exporter
+    command:
+      - '--path.rootfs=/host'
+    networks:
+      - proxy
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.lab.misson.cloud`)"
+      - "traefik.http.routers.grafana-secure.entrypoints=websecure"
+      - "traefik.http.routers.grafana-secure.tls.certresolver=myresolver"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    volumes:
+      - "/srv/docker-volumes/grafana-grafana:/var/lib/grafana"
+    restart: unless-stopped
+    expose:
+      - 3000
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true

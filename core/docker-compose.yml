@@ -48,23 +48,6 @@ services:
     networks:
       - proxy
 
-  statping:
-    image: "statping/statping"
-    container_name: "statping"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.statping-secure.rule=Host(`statping.lab.misson.cloud`)"
-      - "traefik.http.routers.statping-secure.entrypoints=websecure"
-      - "traefik.http.routers.statping-secure.tls.certresolver=myresolver"
-      - "traefik.http.services.statping.loadbalancer.server.port=8080"   
-    volumes:
-      - "/srv/docker-volumes/statping-app:/app"      
-    environment:
-      DB_CONN: sqlite
-    restart: always
-    networks:
-      - proxy
-
 networks:
   proxy:
     external: true      
