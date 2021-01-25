@@ -6,7 +6,7 @@ services:
     container_name: "freshrss"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.freshrss-secure.rule=Host(`freshrss.lab.misson.cloud`)"
+      - "traefik.http.routers.freshrss-secure.rule=Host(`freshrss.cloud63.fr`)"
       - "traefik.http.routers.freshrss-secure.entrypoints=websecure"
       - "traefik.http.routers.freshrss-secure.tls.certresolver=myresolver"
     volumes:

@@ -6,7 +6,7 @@ services:
     container_name: "statping"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.statping-secure.rule=Host(`statping.lab.misson.cloud`)"
+      - "traefik.http.routers.statping-secure.rule=Host(`statping.cloud63.fr`)"
       - "traefik.http.routers.statping-secure.entrypoints=websecure"
       - "traefik.http.routers.statping-secure.tls.certresolver=myresolver"
       - "traefik.http.services.statping.loadbalancer.server.port=8080"   

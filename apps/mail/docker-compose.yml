@@ -8,7 +8,7 @@ services:
       - mail
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mail-secure.rule=Host(`mail.lab.misson.cloud`)"
+      - "traefik.http.routers.mail-secure.rule=Host(`mail.cloud63.fr`)"
       - "traefik.http.routers.mail-secure.entrypoints=websecure"
       - "traefik.http.routers.mail-secure.tls.certresolver=myresolver"
       - "traefik.http.services.mail-secure.loadbalancer.server.port=8888"

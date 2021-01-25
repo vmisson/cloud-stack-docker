@@ -12,7 +12,7 @@ services:
       - MYSQL_PASSWORD=nextcloud       
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.lab.misson.cloud`)"
+      - "traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.cloud63.fr`)"
       - "traefik.http.routers.nextcloud-secure.entrypoints=websecure"
       - "traefik.http.routers.nextcloud-secure.tls.certresolver=myresolver"
     volumes:

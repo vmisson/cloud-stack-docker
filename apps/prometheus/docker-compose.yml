@@ -7,7 +7,7 @@ services:
     user: root
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prometheus-secure.rule=Host(`prometheus.lab.misson.cloud`)"
+      - "traefik.http.routers.prometheus-secure.rule=Host(`prometheus.cloud63.fr`)"
       - "traefik.http.routers.prometheus-secure.entrypoints=websecure"
       - "traefik.http.routers.prometheus-secure.tls.certresolver=myresolver"
       - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
@@ -48,7 +48,7 @@ services:
     container_name: grafana
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.lab.misson.cloud`)"
+      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.cloud63.fr`)"
       - "traefik.http.routers.grafana-secure.entrypoints=websecure"
       - "traefik.http.routers.grafana-secure.tls.certresolver=myresolver"
       - "traefik.http.services.grafana.loadbalancer.server.port=3000"
