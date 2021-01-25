@@ -4,6 +4,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
+    user: root
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus-secure.rule=Host(`prometheus.lab.misson.cloud`)"
