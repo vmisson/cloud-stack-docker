@@ -16,7 +16,7 @@ services:
       - "/srv/docker-volumes/rainloop-data:/rainloop/data" 
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
   mail:
     image: docker.io/mailserver/docker-mailserver:latest
@@ -38,8 +38,8 @@ services:
       - SYS_PTRACE
     restart: unless-stopped    
     networks:
-      - proxy    
+      - docker    
 
 networks:
-  proxy:
+  docker:
     external: true

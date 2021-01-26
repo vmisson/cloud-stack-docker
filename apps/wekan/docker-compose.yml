@@ -7,7 +7,7 @@ services:
     restart: always
     command: mongod --logpath /dev/null --oplogSize 128 --quiet
     networks:
-      - wekan
+      - docker
     volumes:
       - "/srv/docker-volumes/mongo-db:/data/db"    
       - "/srv/docker-volumes/mongo-dump:/dump"    
@@ -17,8 +17,7 @@ services:
     container_name: wekan
     restart: always
     networks:
-      - proxy
-      - wekan
+      - docker
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wekan-secure.rule=Host(`wekan.cloud63.fr`)"
@@ -39,7 +38,5 @@ services:
       - mongo
 
 networks:
-  proxy:
-    external: true
-  wekan:
-    driver: bridge    
+  docker:
+    external: true 

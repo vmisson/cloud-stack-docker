@@ -17,8 +17,8 @@ services:
       - "/srv/docker-volumes/bitwarden-ssl:/ssl"            
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
 networks:
-  proxy:
+  docker:
     external: true    

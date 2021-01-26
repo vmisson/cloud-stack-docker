@@ -21,7 +21,7 @@ services:
       - "/srv/docker-volumes/traefik-letsencrypt:/letsencrypt"
     restart: unless-stopped
     networks:
-      - proxy    
+      - docker    
 
   portainer:
     image: "portainer/portainer-ce"
@@ -37,7 +37,7 @@ services:
         - "/srv/docker-volumes/portainer-data:/data"
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
   watchtower:
     image: "containrrr/watchtower"
@@ -46,8 +46,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
 networks:
-  proxy:
+  docker:
     external: true      

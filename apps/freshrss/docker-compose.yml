@@ -13,8 +13,8 @@ services:
       - "/srv/docker-volumes/freshrss-config:/config" 
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
 networks:
-  proxy:
+  docker:
     external: true

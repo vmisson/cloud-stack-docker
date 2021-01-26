@@ -19,7 +19,7 @@ services:
       - "/srv/docker-volumes/nextcloud-html:/var/www/html" 
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
   redis:
     image: redis:alpine
@@ -28,7 +28,7 @@ services:
       - "/srv/docker-volumes/redis-data:/data" 
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
   mariadb:
     image: mariadb
@@ -43,8 +43,8 @@ services:
       - "/srv/docker-volumes/mariadb-mysql:/var/lib/mysql"
     restart: unless-stopped
     networks:
-      - proxy
+      - docker
 
 networks:
-  proxy:
+  docker:
     external: true
