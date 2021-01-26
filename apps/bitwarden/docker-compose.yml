@@ -9,7 +9,7 @@ services:
       SIGNUPS_ALLOWED: 'true'
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bitwarden-secure.rule=Host(`password.cloud63.fr`)"
+      - "traefik.http.routers.bitwarden-secure.rule=Host(`bitwarden.cloud63.fr`)"
       - "traefik.http.routers.bitwarden-secure.entrypoints=websecure"
       - "traefik.http.routers.bitwarden-secure.tls.certresolver=myresolver"
     volumes:
