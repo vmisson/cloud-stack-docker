@@ -2,9 +2,9 @@ version: "3.3"
 
 services:
   prometheus:
-    image: prom/prometheus:latest
+    image: "prom/prometheus"
     container_name: prometheus
-    user: root
+    user: root  
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prometheus-secure.rule=Host(`prometheus.cloud63.fr`)"
@@ -17,35 +17,15 @@ services:
     volumes:
       - "/srv/docker-volumes/prometheus-prometheus:/etc/prometheus"
       - "/srv/docker-volumes/prometheus:/prometheus"
+    restart: unless-stopped      
     networks:
       - docker
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    volumes:
-    - /:/rootfs:ro
-    - /var/run:/var/run:rw
-    - /sys:/sys:ro
-    - /var/lib/docker/:/var/lib/docker:ro
-    networks:
-      - docker
-
-  node-exporter:
-    image: quay.io/prometheus/node-exporter:latest
-    container_name: node-exporter
-    command:
-      - '--path.rootfs=/host'
-    networks:
-      - docker
-    pid: host
-    restart: unless-stopped
-    volumes:
-      - '/:/host:ro,rslave'
 
   grafana:
-    image: grafana/grafana
-    container_name: grafana
+    image: "grafana/grafana"
+    container_name: "grafana"
+    depends_on:
+      - "prometheus" 
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana-secure.rule=Host(`grafana.cloud63.fr`)"
@@ -55,8 +35,29 @@ services:
     volumes:
       - "/srv/docker-volumes/grafana-grafana:/var/lib/grafana"
     restart: unless-stopped
-    expose:
-      - 3000
+    networks:
+      - docker
+  cadvisor:
+    image: "gcr.io/cadvisor/cadvisor"
+    container_name: "cadvisor"
+    volumes:
+    - "/:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+    restart: unless-stopped    
+    networks:
+      - docker
+
+  node-exporter:
+    image: "quay.io/prometheus/node-exporter"
+    container_name: "node-exporter"
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    volumes:
+      - "/:/host:ro,rslave"
+    restart: unless-stopped      
     networks:
       - docker
 

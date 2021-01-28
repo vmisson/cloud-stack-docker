@@ -1,15 +1,13 @@
-version: '3.3'
+version: "3.3"
 
 services:
   nextcloud:
-    image: nextcloud:apache
+    image: "nextcloud:apache"
     container_name: "nextcloud"
-    environment:
-      - REDIS_HOST=redis
-      - MYSQL_HOST=mariadb
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=nextcloud       
+    depends_on:
+      - "mariadb"
+      - "redis"  
+    env_file: "/srv/docker-volumes/nextcloud-html/nextcloud.env"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nextcloud-secure.rule=Host(`nextcloud.cloud63.fr`)"
@@ -22,7 +20,7 @@ services:
       - docker
 
   redis:
-    image: redis:alpine
+    image: "redis:alpine"
     container_name: "redis"
     volumes:
       - "/srv/docker-volumes/redis-data:/data" 
@@ -31,14 +29,10 @@ services:
       - docker
 
   mariadb:
-    image: mariadb
+    image: "mariadb"
     container_name: "mariadb"
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    environment:
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_ROOT_PASSWORD=nextcloud
-      - MYSQL_PASSWORD=nextcloud
+    env_file: "/srv/docker-volumes/nextcloud-html/nextcloud.env"
     volumes:
       - "/srv/docker-volumes/mariadb-mysql:/var/lib/mysql"
     restart: unless-stopped

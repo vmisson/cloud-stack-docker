@@ -4,6 +4,8 @@ services:
   statping:
     image: "statping/statping"
     container_name: "statping"
+    environment:
+      DB_CONN: "sqlite"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.statping-secure.rule=Host(`statping.cloud63.fr`)"
@@ -12,9 +14,7 @@ services:
       - "traefik.http.services.statping.loadbalancer.server.port=8080"   
     volumes:
       - "/srv/docker-volumes/statping-app:/app"      
-    environment:
-      DB_CONN: sqlite
-    restart: always
+    restart: unless-stopped
     networks:
       - docker
 

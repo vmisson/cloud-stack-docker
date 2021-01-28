@@ -1,12 +1,12 @@
-version: '3.3'
+version: "3.3"
 
 services:
   bitwarden:
     image: "bitwardenrs/server"
     container_name: "bitwarden"
     environment:
-      LOG_FILE: '/data/bitwarden.log'
-      SIGNUPS_ALLOWED: 'true'
+      LOG_FILE: "/data/bitwarden.log"
+      SIGNUPS_ALLOWED: "false"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bitwarden-secure.rule=Host(`bitwarden.cloud63.fr`)"
