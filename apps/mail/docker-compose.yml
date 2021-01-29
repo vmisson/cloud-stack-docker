@@ -15,7 +15,7 @@ services:
       - "/srv/docker-volumes/mail-state:/var/mail-state"
       - "/srv/docker-volumes/mail-log/:/var/log/mail"
       - "/srv/docker-volumes/mail-config/:/tmp/docker-mailserver/"
-      - "/srv/docker-volumes/mail-letsencrypt/:/etc/letsencrypt/"
+      - "/srv/docker-volumes/traefik-letsencrypt/acme.json:/etc/letsencrypt/acme.json:ro"      
     cap_add:
       - NET_ADMIN
       - SYS_PTRACE
