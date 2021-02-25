@@ -4,19 +4,16 @@ services:
   traefik:
     image: "traefik:v2.3"
     container_name: "traefik"
-    command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=vincent@misson.cloud"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.cloud63.fr`)"
+      - "traefik.http.routers.traefik-secure.entrypoints=websecure"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=myresolver"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
     ports:
       - "443:443"
-      - "8080:8080"
     volumes:
+      - "/srv/docker-volumes/traefik-traefik/traefik.yml:/etc/traefik/traefik.yml:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/srv/docker-volumes/traefik-letsencrypt:/letsencrypt"
     restart: unless-stopped
