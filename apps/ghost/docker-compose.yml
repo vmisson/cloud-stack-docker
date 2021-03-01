@@ -1,0 +1,23 @@
+version: "3.3"
+
+services:
+  ghost:
+    image: "ghost"
+    container_name: "ghost"
+    environment: 
+      url: https://blog.cloud63.fr
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ghost-secure.rule=Host(`blog.cloud63.fr`)"
+      - "traefik.http.routers.ghost-secure.entrypoints=websecure"
+      - "traefik.http.routers.ghost-secure.tls.certresolver=myresolver"
+      - "traefik.http.services.ghost.loadbalancer.server.port=2368"
+    volumes:
+      - "/srv/docker-volumes/ghost-content/:/var/lib/ghost/content" 
+    restart: unless-stopped
+    networks:
+      - docker
+
+networks:
+  docker:
+    external: true
